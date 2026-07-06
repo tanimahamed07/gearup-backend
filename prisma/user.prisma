@@ -8,10 +8,14 @@ model User{
     phone      String?
 
     gearItems GearItem[]
-
+    rentalOrders RentalOder[]
     
+
+
+
     createdAt  DateTime    @default(now())
     updatedAt  DateTime    @updatedAt
+
 
   
   @@map("users")

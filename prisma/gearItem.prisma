@@ -11,9 +11,11 @@ model GearItem {
 
     providerId String
     provider User    @relation(fields: [providerId], references: [id])
-    
+
     categoryId String
     category Category @relation(fields: [categoryId], references: [id])
+
+    rentalOrderItems RentalOrderItem[]
 
     @@map("gear_items")
 }

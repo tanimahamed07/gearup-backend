@@ -8,3 +8,12 @@ enum UserStatus {
   ACTIVE
   SUSPENDED
 }
+
+enum RentalOrderStatus {
+  PLACED
+  CONFIRMED
+  CANCELLED
+  PAID
+  PICKED_UP
+  RETURNED
+}
