@@ -5,7 +5,7 @@ model RentalOrderItem {
   subtotal    Decimal @db.Decimal(10, 2)
 
   rentalOrderId String
-  rentalOrder   RentalOder @relation(fields: [rentalOrderId], references: [id])
+  rentalOrder   RentalOrder @relation(fields: [rentalOrderId], references: [id])
 
   gearItemId String
   gearItem   GearItem @relation(fields: [gearItemId], references: [id])

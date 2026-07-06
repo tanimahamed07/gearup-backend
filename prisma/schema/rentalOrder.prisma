@@ -1,4 +1,4 @@
-model RentalOder {
+model RentalOrder {
   id          String            @id @default(uuid())
   startDate   DateTime // Required (কবে থেকে ভাড়া)
   endDate     DateTime // Required (কবে পর্যন্ত ভাড়া)
@@ -11,6 +11,7 @@ model RentalOder {
   customer   User   @relation(fields: [customerId], references: [id])
 
   rentalOrderItems RentalOrderItem[]
+  payment          Payment?
 
   @@map("rental_orders")
 }

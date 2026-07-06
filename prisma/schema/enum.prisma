@@ -17,3 +17,9 @@ enum RentalOrderStatus {
   PICKED_UP
   RETURNED
 }
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
