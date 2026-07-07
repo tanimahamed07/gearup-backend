@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import { userRouts } from "./modules/user/user.route";
 import { authRouts } from "./modules/auth/auth.route";
 import { gearRoutes } from "./modules/gear/gear.route";
+import { categoryRouts } from "./modules/category/category.route";
 
 const app: Application = express();
 app.use(
@@ -25,6 +26,7 @@ app.get("/", async (req: Request, res: Response) => {
 app.use("/api/auth/", userRouts);
 app.use("/api/auth/", authRouts);
 app.use("/api/gear/", gearRoutes);
+app.use("/api/category/", categoryRouts);
 
 app.use(notFound);
 
