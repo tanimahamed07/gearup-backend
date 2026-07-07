@@ -7,9 +7,9 @@ import { userService } from "./user.service";
 
 export const registerUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
-//   console.log(payload)
+  //   console.log(payload)
   const user = await userService.registerUser(payload);
-//   console.log("=======>", user);
+  //   console.log("=======>", user);
 
   sendResponse(res, {
     success: true,
@@ -19,6 +19,20 @@ export const registerUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMyProfile = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+
+  const profile = await userService.getMyProfile(userId as string);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User profile get successfully",
+    data:  profile ,
+  });
+});
+
 export const userController = {
   registerUser,
+  getMyProfile,
 };
