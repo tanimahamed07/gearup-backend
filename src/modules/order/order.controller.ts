@@ -22,6 +22,21 @@ const postOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
+const getMyRentals = catchAsync(async (req: Request, res: Response) => {
+  const customerId = (req as any).user.id; 
+
+  const result = await orderService.getMyRentals(customerId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Customer rental history retrieved successfully",
+    data: result,
+  });
+});
+
 export const orderController = {
   postOrder,
+  getMyRentals
 };

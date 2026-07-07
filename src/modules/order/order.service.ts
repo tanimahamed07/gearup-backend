@@ -71,4 +71,24 @@ const postOrder = async (payload: TRentalOrderPayload) => {
   });
 };
 
-export const orderService = { postOrder };
+const getMyRentals = async (customerId: string) => {
+  const rentals = await prisma.rentalOrder.findMany({
+    where: {
+      customerId: customerId,
+    },
+    include: {
+      rentalOrderItems: {
+        include: {
+          gearItem: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return rentals;
+};
+
+export const orderService = { postOrder, getMyRentals };
