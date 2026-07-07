@@ -28,15 +28,25 @@ export type Category = Prisma.CategoryModel
  */
 export type GearItem = Prisma.GearItemModel
 /**
- * Model RentalOder
+ * Model Payment
  * 
  */
-export type RentalOder = Prisma.RentalOderModel
+export type Payment = Prisma.PaymentModel
+/**
+ * Model RentalOrder
+ * 
+ */
+export type RentalOrder = Prisma.RentalOrderModel
 /**
  * Model RentalOrderItem
  * 
  */
 export type RentalOrderItem = Prisma.RentalOrderItemModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
 /**
  * Model User
  * 

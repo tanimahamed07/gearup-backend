@@ -232,7 +232,7 @@ export type RentalOrderItemWhereInput = {
   subtotal?: Prisma.DecimalFilter<"RentalOrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   rentalOrderId?: Prisma.StringFilter<"RentalOrderItem"> | string
   gearItemId?: Prisma.StringFilter<"RentalOrderItem"> | string
-  rentalOrder?: Prisma.XOR<Prisma.RentalOderScalarRelationFilter, Prisma.RentalOderWhereInput>
+  rentalOrder?: Prisma.XOR<Prisma.RentalOrderScalarRelationFilter, Prisma.RentalOrderWhereInput>
   gearItem?: Prisma.XOR<Prisma.GearItemScalarRelationFilter, Prisma.GearItemWhereInput>
 }
 
@@ -243,7 +243,7 @@ export type RentalOrderItemOrderByWithRelationInput = {
   subtotal?: Prisma.SortOrder
   rentalOrderId?: Prisma.SortOrder
   gearItemId?: Prisma.SortOrder
-  rentalOrder?: Prisma.RentalOderOrderByWithRelationInput
+  rentalOrder?: Prisma.RentalOrderOrderByWithRelationInput
   gearItem?: Prisma.GearItemOrderByWithRelationInput
 }
 
@@ -257,7 +257,7 @@ export type RentalOrderItemWhereUniqueInput = Prisma.AtLeast<{
   subtotal?: Prisma.DecimalFilter<"RentalOrderItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   rentalOrderId?: Prisma.StringFilter<"RentalOrderItem"> | string
   gearItemId?: Prisma.StringFilter<"RentalOrderItem"> | string
-  rentalOrder?: Prisma.XOR<Prisma.RentalOderScalarRelationFilter, Prisma.RentalOderWhereInput>
+  rentalOrder?: Prisma.XOR<Prisma.RentalOrderScalarRelationFilter, Prisma.RentalOrderWhereInput>
   gearItem?: Prisma.XOR<Prisma.GearItemScalarRelationFilter, Prisma.GearItemWhereInput>
 }, "id">
 
@@ -292,7 +292,7 @@ export type RentalOrderItemCreateInput = {
   quantity?: number
   pricePerDay: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal: runtime.Decimal | runtime.DecimalJsLike | number | string
-  rentalOrder: Prisma.RentalOderCreateNestedOneWithoutRentalOrderItemsInput
+  rentalOrder: Prisma.RentalOrderCreateNestedOneWithoutRentalOrderItemsInput
   gearItem: Prisma.GearItemCreateNestedOneWithoutRentalOrderItemsInput
 }
 
@@ -310,7 +310,7 @@ export type RentalOrderItemUpdateInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   pricePerDay?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  rentalOrder?: Prisma.RentalOderUpdateOneRequiredWithoutRentalOrderItemsNestedInput
+  rentalOrder?: Prisma.RentalOrderUpdateOneRequiredWithoutRentalOrderItemsNestedInput
   gearItem?: Prisma.GearItemUpdateOneRequiredWithoutRentalOrderItemsNestedInput
 }
 
@@ -486,7 +486,7 @@ export type RentalOrderItemCreateWithoutGearItemInput = {
   quantity?: number
   pricePerDay: runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal: runtime.Decimal | runtime.DecimalJsLike | number | string
-  rentalOrder: Prisma.RentalOderCreateNestedOneWithoutRentalOrderItemsInput
+  rentalOrder: Prisma.RentalOrderCreateNestedOneWithoutRentalOrderItemsInput
 }
 
 export type RentalOrderItemUncheckedCreateWithoutGearItemInput = {
@@ -590,7 +590,7 @@ export type RentalOrderItemUpdateWithoutGearItemInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   pricePerDay?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   subtotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  rentalOrder?: Prisma.RentalOderUpdateOneRequiredWithoutRentalOrderItemsNestedInput
+  rentalOrder?: Prisma.RentalOrderUpdateOneRequiredWithoutRentalOrderItemsNestedInput
 }
 
 export type RentalOrderItemUncheckedUpdateWithoutGearItemInput = {
@@ -650,7 +650,7 @@ export type RentalOrderItemSelect<ExtArgs extends runtime.Types.Extensions.Inter
   subtotal?: boolean
   rentalOrderId?: boolean
   gearItemId?: boolean
-  rentalOrder?: boolean | Prisma.RentalOderDefaultArgs<ExtArgs>
+  rentalOrder?: boolean | Prisma.RentalOrderDefaultArgs<ExtArgs>
   gearItem?: boolean | Prisma.GearItemDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rentalOrderItem"]>
 
@@ -661,7 +661,7 @@ export type RentalOrderItemSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   subtotal?: boolean
   rentalOrderId?: boolean
   gearItemId?: boolean
-  rentalOrder?: boolean | Prisma.RentalOderDefaultArgs<ExtArgs>
+  rentalOrder?: boolean | Prisma.RentalOrderDefaultArgs<ExtArgs>
   gearItem?: boolean | Prisma.GearItemDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rentalOrderItem"]>
 
@@ -672,7 +672,7 @@ export type RentalOrderItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   subtotal?: boolean
   rentalOrderId?: boolean
   gearItemId?: boolean
-  rentalOrder?: boolean | Prisma.RentalOderDefaultArgs<ExtArgs>
+  rentalOrder?: boolean | Prisma.RentalOrderDefaultArgs<ExtArgs>
   gearItem?: boolean | Prisma.GearItemDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rentalOrderItem"]>
 
@@ -687,22 +687,22 @@ export type RentalOrderItemSelectScalar = {
 
 export type RentalOrderItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "quantity" | "pricePerDay" | "subtotal" | "rentalOrderId" | "gearItemId", ExtArgs["result"]["rentalOrderItem"]>
 export type RentalOrderItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  rentalOrder?: boolean | Prisma.RentalOderDefaultArgs<ExtArgs>
+  rentalOrder?: boolean | Prisma.RentalOrderDefaultArgs<ExtArgs>
   gearItem?: boolean | Prisma.GearItemDefaultArgs<ExtArgs>
 }
 export type RentalOrderItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  rentalOrder?: boolean | Prisma.RentalOderDefaultArgs<ExtArgs>
+  rentalOrder?: boolean | Prisma.RentalOrderDefaultArgs<ExtArgs>
   gearItem?: boolean | Prisma.GearItemDefaultArgs<ExtArgs>
 }
 export type RentalOrderItemIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  rentalOrder?: boolean | Prisma.RentalOderDefaultArgs<ExtArgs>
+  rentalOrder?: boolean | Prisma.RentalOrderDefaultArgs<ExtArgs>
   gearItem?: boolean | Prisma.GearItemDefaultArgs<ExtArgs>
 }
 
 export type $RentalOrderItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "RentalOrderItem"
   objects: {
-    rentalOrder: Prisma.$RentalOderPayload<ExtArgs>
+    rentalOrder: Prisma.$RentalOrderPayload<ExtArgs>
     gearItem: Prisma.$GearItemPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1106,7 +1106,7 @@ readonly fields: RentalOrderItemFieldRefs;
  */
 export interface Prisma__RentalOrderItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  rentalOrder<T extends Prisma.RentalOderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RentalOderDefaultArgs<ExtArgs>>): Prisma.Prisma__RentalOderClient<runtime.Types.Result.GetResult<Prisma.$RentalOderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  rentalOrder<T extends Prisma.RentalOrderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RentalOrderDefaultArgs<ExtArgs>>): Prisma.Prisma__RentalOrderClient<runtime.Types.Result.GetResult<Prisma.$RentalOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   gearItem<T extends Prisma.GearItemDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GearItemDefaultArgs<ExtArgs>>): Prisma.Prisma__GearItemClient<runtime.Types.Result.GetResult<Prisma.$GearItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.

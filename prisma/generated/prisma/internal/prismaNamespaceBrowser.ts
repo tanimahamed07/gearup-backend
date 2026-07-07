@@ -53,8 +53,10 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Category: 'Category',
   GearItem: 'GearItem',
-  RentalOder: 'RentalOder',
+  Payment: 'Payment',
+  RentalOrder: 'RentalOrder',
   RentalOrderItem: 'RentalOrderItem',
+  Review: 'Review',
   User: 'User'
 } as const
 
@@ -99,18 +101,32 @@ export const GearItemScalarFieldEnum = {
 export type GearItemScalarFieldEnum = (typeof GearItemScalarFieldEnum)[keyof typeof GearItemScalarFieldEnum]
 
 
-export const RentalOderScalarFieldEnum = {
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  transactionId: 'transactionId',
+  amount: 'amount',
+  method: 'method',
+  status: 'status',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  rentalOrderId: 'rentalOrderId',
+  userId: 'userId'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const RentalOrderScalarFieldEnum = {
   id: 'id',
   startDate: 'startDate',
   endDate: 'endDate',
-  totalPrice: 'totalPrice',
   status: 'status',
   totalAmount: 'totalAmount',
   createdAt: 'createdAt',
   customerId: 'customerId'
 } as const
 
-export type RentalOderScalarFieldEnum = (typeof RentalOderScalarFieldEnum)[keyof typeof RentalOderScalarFieldEnum]
+export type RentalOrderScalarFieldEnum = (typeof RentalOrderScalarFieldEnum)[keyof typeof RentalOrderScalarFieldEnum]
 
 
 export const RentalOrderItemScalarFieldEnum = {
@@ -123,6 +139,18 @@ export const RentalOrderItemScalarFieldEnum = {
 } as const
 
 export type RentalOrderItemScalarFieldEnum = (typeof RentalOrderItemScalarFieldEnum)[keyof typeof RentalOrderItemScalarFieldEnum]
+
+
+export const ReviewScalarFieldEnum = {
+  id: 'id',
+  comment: 'comment',
+  rating: 'rating',
+  customerId: 'customerId',
+  gearItemId: 'gearItemId',
+  createdAt: 'createdAt'
+} as const
+
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
