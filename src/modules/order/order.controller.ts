@@ -22,9 +22,8 @@ const postOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-
 const getMyRentals = catchAsync(async (req: Request, res: Response) => {
-  const customerId = (req as any).user.id; 
+  const customerId = (req as any).user.id;
 
   const result = await orderService.getMyRentals(customerId);
 
@@ -36,7 +35,20 @@ const getMyRentals = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getRentalDetails = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id
+  const result = await orderService.getRentalDetails(id as string)
+
+    sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Customer rental details retrieved successfully",
+    data: result,
+  });
+});
+
 export const orderController = {
   postOrder,
-  getMyRentals
+  getMyRentals,
+  getRentalDetails,
 };

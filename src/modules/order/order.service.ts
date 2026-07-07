@@ -91,4 +91,16 @@ const getMyRentals = async (customerId: string) => {
   return rentals;
 };
 
-export const orderService = { postOrder, getMyRentals };
+const getRentalDetails = async (id: string) => {
+  return await prisma.rentalOrder.findUniqueOrThrow({
+    where: { id },
+    include: {
+      rentalOrderItems: {
+        include: {
+          gearItem: true,
+        },
+      },
+    },
+  });
+};
+export const orderService = { postOrder, getMyRentals, getRentalDetails };
