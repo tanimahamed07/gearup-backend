@@ -1,12 +1,11 @@
 import cors from "cors";
 import express, { Application, NextFunction, Request, Response } from "express";
 import config from "./config";
-
-import httpStatus from "http-status";
 import { notFound } from "./middlewares/notFound";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import cookieParser from "cookie-parser";
-import { prisma } from "./lib/prisma";
+import { userRouts } from "./modules/user/user.route";
+import { authRouts } from "./modules/auth/auth.route";
 
 const app: Application = express();
 app.use(
@@ -21,6 +20,9 @@ app.use(cookieParser());
 app.get("/", async (req: Request, res: Response) => {
   res.send("hello, World!");
 });
+
+app.use("/api/auth/", userRouts);
+app.use("/api/auth/", authRouts);
 
 app.use(notFound);
 
