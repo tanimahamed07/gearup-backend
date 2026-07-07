@@ -1,6 +1,9 @@
 import bcrypt from "bcryptjs";
 import { User } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
+import config from "../../config";
+import { jwtUtils } from "../../utils/jwt";
+import { JwtPayload, SignOptions } from "jsonwebtoken";
 
 const loginUser = async (payload: Pick<User, "email" | "password">) => {
   const { email, password } = payload;
@@ -16,6 +19,10 @@ const loginUser = async (payload: Pick<User, "email" | "password">) => {
     throw new Error("password or email not valid");
   }
 
+  if (user.status === "SUSPENDED") {
+    throw new Error("User is Suspended");
+  }
+
   const jwtPayload = {
     id: user.id,
     name: user.name,
@@ -23,9 +30,60 @@ const loginUser = async (payload: Pick<User, "email" | "password">) => {
     role: user.role,
   };
 
-  
+  const accessToken = jwtUtils.createToken(
+    jwtPayload,
+    config.jwt_access_secret,
+    config.jwt_access_expires_in as SignOptions,
+  );
+
+  const refreshToken = jwtUtils.createToken(
+    jwtPayload,
+    config.jwt_refresh_secret,
+    config.jwt_refresh_expires_in as SignOptions,
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+  };
+};
+
+const refreshToken = async (refreshToken: string) => {
+  const verifiedRefreshToken = jwtUtils.verifiedToken(
+    refreshToken,
+    config.jwt_access_secret,
+  );
+  if (!verifiedRefreshToken.success) {
+    throw new Error(verifiedRefreshToken.error);
+  }
+
+  const { id } = verifiedRefreshToken.data as JwtPayload;
+
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  });
+
+  if (user.status === "SUSPENDED") {
+    throw new Error("User already SUSPENDED");
+  }
+  const jwtPayload = {
+    id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
+
+  const accessToken = jwtUtils.createToken(
+    jwtPayload,
+    config.jwt_access_secret,
+    config.jwt_access_expires_in as SignOptions,
+  );
+  return { accessToken };
 };
 
 export const authService = {
   loginUser,
+  refreshToken
 };
