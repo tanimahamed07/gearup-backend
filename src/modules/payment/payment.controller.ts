@@ -29,15 +29,41 @@ const handleWebhook = catchAsync(async (req: Request, res: Response) => {
 
   await paymentServices.handleWebhook(rawBody, signature);
 
-    sendResponse(res, {
-      success: true,
-      statusCode: 200,
-      message: "Webhook triggered successfully",
-      data: null,
-    });
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Webhook triggered successfully",
+    data: null,
+  });
+});
+
+const getPaymentHistory = catchAsync(async (req: Request, res: Response) => {
+  const id = req.user?.id;
+  const result = await paymentServices.getPaymentHistory(id as string);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Payment history retrieved successfully",
+    data: result,
+  });
+});
+
+const getPaymentDetails = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const result = await paymentServices.getPaymentDetails(id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Payment details retrieved successfully",
+    data: result,
+  });
 });
 
 export const paymentController = {
   createCheckoutSession,
   handleWebhook,
+  getPaymentHistory,
+  getPaymentDetails,
 };

@@ -99,7 +99,6 @@ const handleWebhook = async (rawBody: Buffer | string, signature: string) => {
           return;
         }
 
-        // Payment update করি
         await tx.payment.update({
           where: { rentalOrderId },
           data: {
@@ -108,7 +107,6 @@ const handleWebhook = async (rawBody: Buffer | string, signature: string) => {
             transactionId: (session.payment_intent as string) || session.id,
           },
         });
-
 
         await tx.rentalOrder.update({
           where: { id: rentalOrderId },
@@ -152,7 +150,25 @@ const handleWebhook = async (rawBody: Buffer | string, signature: string) => {
   return { received: true };
 };
 
+const getPaymentHistory = async (id: string) => {
+  return await prisma.payment.findMany({
+    where: { userId: id },
+  });
+};
+
+const getPaymentDetails = async (id: string) => {
+  return await prisma.payment.findUniqueOrThrow({
+    where: { id },
+    include: {
+      user: true,
+      order: true,
+    },
+  });
+};
+
 export const paymentServices = {
   createCheckoutSession,
   handleWebhook,
+  getPaymentHistory,
+  getPaymentDetails,
 };
