@@ -55,7 +55,7 @@ const postOrder = async (payload: TRentalOrderPayload) => {
       });
     }
 
-    return await tx.rentalOrder.create({
+    const order = await tx.rentalOrder.create({
       data: {
         customerId,
         startDate: start,
@@ -65,9 +65,23 @@ const postOrder = async (payload: TRentalOrderPayload) => {
         rentalOrderItems: {
           create: processedItems,
         },
+        payment: {
+          create: {
+            transactionId: `pending_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+            amount: totalAmount,
+            method: "stripe",
+            status: "PENDING",
+            userId: customerId,
+          },
+        },
       },
-      include: { rentalOrderItems: true },
+      include: {
+        rentalOrderItems: true,
+        payment: true,
+      },
     });
+
+    return order;
   });
 };
 

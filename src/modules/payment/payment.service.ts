@@ -1,9 +1,11 @@
-import { Request, Response } from "express";
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../lib/stripe";
 import Stripe from "stripe";
-import { PaymentStatus, RentalOrderStatus } from "../../../generated/prisma/enums";
+import {
+  PaymentStatus,
+  RentalOrderStatus,
+} from "../../../generated/prisma/enums";
 
 const createCheckoutSession = async (rentalOrderId: string, userId: string) => {
   const transactionResult = await prisma.$transaction(async (tx) => {
@@ -50,18 +52,23 @@ const createCheckoutSession = async (rentalOrderId: string, userId: string) => {
   return transactionResult;
 };
 
-const handleWebhook = async (rawBody: Buffer, signature: string) => {
+const handleWebhook = async (rawBody: Buffer | string, signature: string) => {
   let event: Stripe.Event;
 
   try {
+    const buffer = typeof rawBody === "string" ? Buffer.from(rawBody) : rawBody;
+
     event = stripe.webhooks.constructEvent(
-      rawBody,
+      buffer,
       signature,
       config.stripe_webhook_secret as string,
     );
-  } catch (err) {
-    throw new Error("Webhook signature verification failed");
+  } catch (err: any) {
+    console.error("Webhook signature verification failed:", err.message);
+    throw new Error(`Webhook signature verification failed: ${err.message}`);
   }
+
+  console.log(`Received webhook event: ${event.type}`);
 
   switch (event.type) {
     case "checkout.session.completed": {
@@ -69,7 +76,12 @@ const handleWebhook = async (rawBody: Buffer, signature: string) => {
       const rentalOrderId = session.metadata?.rentalOrderId;
       const userId = session.metadata?.userId;
 
-      if (!rentalOrderId) break;
+      console.log(`Processing successful payment for order: ${rentalOrderId}`);
+
+      if (!rentalOrderId) {
+        console.warn("No rentalOrderId in webhook metadata");
+        break;
+      }
 
       await prisma.$transaction(async (tx) => {
         const order = await tx.rentalOrder.findUnique({
@@ -77,33 +89,35 @@ const handleWebhook = async (rawBody: Buffer, signature: string) => {
           include: { payment: true },
         });
 
-        if (!order) return;
+        if (!order) {
+          console.error(`Order not found: ${rentalOrderId}`);
+          return;
+        }
 
+        if (order.payment?.status === PaymentStatus.COMPLETED) {
+          console.log(`Payment already completed for order: ${rentalOrderId}`);
+          return;
+        }
 
-        if (order.payment?.status === PaymentStatus.COMPLETED) return;
-
-        await tx.payment.upsert({
+        // Payment update করি
+        await tx.payment.update({
           where: { rentalOrderId },
-          update: {
+          data: {
             status: PaymentStatus.COMPLETED,
             paidAt: new Date(),
-            transactionId: session.id,
-          },
-          create: {
-            rentalOrderId,
-            transactionId: session.id,
-            amount: order.totalAmount,
-            method: "stripe",
-            status: PaymentStatus.COMPLETED,
-            paidAt: new Date(),
-            userId: userId ?? order.customerId,
+            transactionId: (session.payment_intent as string) || session.id,
           },
         });
+
 
         await tx.rentalOrder.update({
           where: { id: rentalOrderId },
           data: { status: RentalOrderStatus.CONFIRMED },
         });
+
+        console.log(
+          `Payment completed successfully for order: ${rentalOrderId}`,
+        );
       });
 
       break;
@@ -114,24 +128,24 @@ const handleWebhook = async (rawBody: Buffer, signature: string) => {
       const session = event.data.object as Stripe.Checkout.Session;
       const rentalOrderId = session.metadata?.rentalOrderId;
 
+      console.log(
+        `Processing failed/expired payment for order: ${rentalOrderId}`,
+      );
+
       if (!rentalOrderId) break;
 
-      await prisma.payment.upsert({
+      await prisma.payment.update({
         where: { rentalOrderId },
-        update: { status: PaymentStatus.FAILED },
-        create: {
-          rentalOrderId,
-          transactionId: session.id,
-          amount: 0,
-          method: "stripe",
-          status: PaymentStatus.FAILED,
-        },
+        data: { status: PaymentStatus.FAILED },
       });
+
+      console.log(`Payment marked as failed for order: ${rentalOrderId}`);
 
       break;
     }
 
     default:
+      console.log(`Unhandled webhook event type: ${event.type}`);
       break;
   }
 
