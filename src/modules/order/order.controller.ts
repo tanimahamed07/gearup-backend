@@ -36,10 +36,10 @@ const getMyRentals = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getRentalDetails = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id
-  const result = await orderService.getRentalDetails(id as string)
+  const id = req.params.id;
+  const result = await orderService.getRentalDetails(id as string);
 
-    sendResponse(res, {
+  sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "Customer rental details retrieved successfully",
