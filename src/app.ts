@@ -10,6 +10,7 @@ import { gearRoutes } from "./modules/gear/gear.route";
 import { categoryRouts } from "./modules/category/category.route";
 import { orderRoutes } from "./modules/order/order.route";
 import { paymentRouts } from "./modules/payment/payment.route";
+import { paymentController } from "./modules/payment/payment.controller";
 
 const app: Application = express();
 app.use(
@@ -18,6 +19,13 @@ app.use(
     credentials: true,
   }),
 );
+
+app.post(
+  "/api/payments/confirm",
+  express.raw({ type: "application/json" }),
+  paymentController.handleWebhook,
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -29,8 +37,8 @@ app.use("/api/auth/", userRouts);
 app.use("/api/auth/", authRouts);
 app.use("/api/gear/", gearRoutes);
 app.use("/api/category/", categoryRouts);
-app.use('/api/rentals', orderRoutes)
-app.use('/api/payment', paymentRouts)
+app.use("/api/rentals", orderRoutes);
+app.use("/api/payments", paymentRouts);
 
 app.use(notFound);
 

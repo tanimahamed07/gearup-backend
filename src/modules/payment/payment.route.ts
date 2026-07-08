@@ -6,9 +6,11 @@ import { paymentController } from "./payment.controller";
 const router = Router();
 
 router.post(
-  "/checkout",
+  "/create",
   auth(Role.CUSTOMER),
   paymentController.createCheckoutSession,
 );
+
+
 
 export const paymentRouts = router;

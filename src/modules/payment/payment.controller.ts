@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { paymentServices } from "./payment.service";
 import { sendResponse } from "../../utils/sendResponse";
-import httpStatus  from "http-status";
+import httpStatus from "http-status";
 
 const createCheckoutSession = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -23,6 +23,19 @@ const createCheckoutSession = catchAsync(
   },
 );
 
+const handleWebhook = catchAsync(async (req: Request, res: Response) => {
+  const signature = req.headers["stripe-signature"] as string;
+
+  const result = await paymentServices.handleWebhook(req.body, signature);
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Webhook triggered successfully",
+    data: null,
+  });
+});
+
 export const paymentController = {
   createCheckoutSession,
+  handleWebhook,
 };
