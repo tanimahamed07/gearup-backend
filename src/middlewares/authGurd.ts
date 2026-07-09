@@ -28,7 +28,7 @@ export const auth = (...requiredRoles: Role[]) => {
         : req.headers.authorization;
 
     if (!token) {
-      throw new Error("Your are not logged in please log in to access");
+      throw new Error("You are not logged in. Please log in to access.");
     }
 
     const verifiedToken = jwtUtils.verifiedToken(
@@ -42,11 +42,11 @@ export const auth = (...requiredRoles: Role[]) => {
 
     const { email, name, id, role } = verifiedToken.data as JwtPayload;
 
-    // const requiredRoles = ["ADMIN", 'USER', 'AUTHOR'];
-    const requiredRoles = [Role.ADMIN, Role.CUSTOMER, Role.PROVIDER];
-
+    // Check if user has required role
     if (requiredRoles.length && !requiredRoles.includes(role)) {
-      throw new Error("Forbidden.you don't permission to access");
+      throw new Error(
+        `Forbidden. You don't have permission to access. Required role: ${requiredRoles.join(" or ")}`,
+      );
     }
 
     const user = await prisma.user.findUnique({
@@ -57,12 +57,13 @@ export const auth = (...requiredRoles: Role[]) => {
         role,
       },
     });
+
     if (!user) {
-      throw new Error("User not found. Please log in again");
+      throw new Error("User not found. Please log in again.");
     }
 
     if (user.status === "SUSPENDED") {
-      throw new Error("Your account has been SUSPENDED");
+      throw new Error("Your account has been suspended.");
     }
 
     req.user = {
@@ -71,6 +72,7 @@ export const auth = (...requiredRoles: Role[]) => {
       id,
       role,
     };
+
     next();
   });
 };

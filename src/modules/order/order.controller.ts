@@ -36,7 +36,7 @@ const getMyRentals = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getRentalDetails = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const result = await orderService.getRentalDetails(id as string);
 
   sendResponse(res, {
@@ -47,8 +47,40 @@ const getRentalDetails = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getProviderIncomingOrders = catchAsync(
+  async (req: Request, res: Response) => {
+    const providerId = req.user?.id;
+
+    const result = await orderService.getProviderIncomingOrders(providerId as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Provider incoming orders retrieved successfully",
+      data: result,
+    });
+  },
+);
+
+const updateOrderStatus = catchAsync(async (req: Request, res: Response) => {
+  const providerId = (req as any).user?.id;
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const result = await orderService.updateOrderStatus(id as string, providerId, status);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Order status updated successfully",
+    data: result,
+  });
+});
+
 export const orderController = {
   postOrder,
   getMyRentals,
   getRentalDetails,
+  getProviderIncomingOrders,
+  updateOrderStatus,
 };
