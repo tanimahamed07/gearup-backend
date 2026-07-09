@@ -43,8 +43,42 @@ const getMyProfile = async (userId: string) => {
   });
   return user;
 };
+const getAllProfile = async () => {
+  const user = await prisma.user.findMany({
+    omit: {
+      password: true,
+    },
+  });
+  return user;
+};
+
+const updateUserStatus = async (
+  userId: string,
+  status: "ACTIVE" | "SUSPENDED",
+) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  // Update user status
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: { status },
+    omit: {
+      password: true,
+    },
+  });
+
+  return updatedUser;
+};
 
 export const userService = {
   registerUser,
   getMyProfile,
+  getAllProfile,
+  updateUserStatus,
 };

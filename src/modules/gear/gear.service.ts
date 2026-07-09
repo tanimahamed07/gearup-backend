@@ -154,14 +154,6 @@ const deleteGear = async (gearId: string, providerId: string) => {
   });
 };
 
-export const gearService = {
-  getAllGear,
-  getGearById,
-  gearPost,
-  updateGear,
-  deleteGear,
-};
-
 const getMyGears = async (providerId: string) => {
   return await prisma.gearItem.findMany({
     where: {
@@ -174,4 +166,32 @@ const getMyGears = async (providerId: string) => {
       createdAt: "desc",
     },
   });
+};
+
+const getAllGearsForAdmin = async () => {
+  return await prisma.gearItem.findMany({
+    include: {
+      category: true,
+      provider: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};
+
+export const gearService = {
+  getAllGear,
+  getGearById,
+  gearPost,
+  updateGear,
+  deleteGear,
+  getMyGears,
+  getAllGearsForAdmin,
 };

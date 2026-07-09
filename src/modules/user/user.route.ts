@@ -12,4 +12,12 @@ router.get(
   userController.getMyProfile,
 );
 
+// Admin routes
+router.get("/admin/users", auth(Role.ADMIN), userController.getAllProfile);
+router.patch(
+  "/admin/users/:id",
+  auth(Role.ADMIN),
+  userController.updateUserStatus,
+);
+
 export const userRouts = router;

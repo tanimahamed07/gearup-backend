@@ -73,7 +73,29 @@ const deleteGear = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMyGears = catchAsync(async (req: Request, res: Response) => {
+  const providerId = req.user?.id;
 
+  const result = await gearService.getMyGears(providerId as string);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "My gears retrieved successfully",
+    data: result,
+  });
+});
+
+const getAllGearsForAdmin = catchAsync(async (req: Request, res: Response) => {
+  const result = await gearService.getAllGearsForAdmin();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "All gears retrieved successfully (Admin)",
+    data: result,
+  });
+});
 
 export const gearController = {
   getAllGear,
@@ -81,4 +103,6 @@ export const gearController = {
   postGear,
   updateGear,
   deleteGear,
+  getMyGears,
+  getAllGearsForAdmin,
 };

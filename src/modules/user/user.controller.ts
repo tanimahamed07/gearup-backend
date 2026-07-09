@@ -28,11 +28,37 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
     success: true,
     statusCode: httpStatus.OK,
     message: "User profile get successfully",
-    data:  profile ,
+    data: profile,
+  });
+});
+const getAllProfile = catchAsync(async (req: Request, res: Response) => {
+  const profile = await userService.getAllProfile();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Users profile get successfully",
+    data: profile,
+  });
+});
+
+const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const result = await userService.updateUserStatus(id as string, status);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: `User ${status === "SUSPENDED" ? "suspended" : "activated"} successfully`,
+    data: result,
   });
 });
 
 export const userController = {
   registerUser,
   getMyProfile,
+  getAllProfile,
+  updateUserStatus,
 };
