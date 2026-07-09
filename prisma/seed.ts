@@ -47,8 +47,7 @@ async function main() {
     create: {
       name: "Admin User",
       email: "admin@gearup.com",
-      password:
-        "$2a$10$8Zr0L7kH9FvZ1h6E0hNxSfKpP2.YGH5PJ9OKQvK5W8F5X3JVQX5X5X5X", // bcrypt hash of "admin123"
+      password: "$2b$10$PROYuGLBIGrdoiT5gSrnvuu51ccmUKciedCU5U.le2pSmqwDs.v12", // bcrypt hash of "admin123"
       role: "ADMIN",
       status: "ACTIVE",
       phone: "+8801700000000",
@@ -64,7 +63,7 @@ async function main() {
     create: {
       name: "GearUp Provider",
       email: "provider@gearup.com",
-      password: "$2a$10$XxqjQvZ1h6E0hNxSfKpP2.YGH5PJ9OKQvK5W8F5X3JVQX5X5X5X5X", // bcrypt hash of "password123"
+      password: "$2b$10$aZKe2H3YS3R9EDa7Gd40TuwxxcZy/MOnWBP0okYr.1VoguD.V/1aW", // bcrypt hash of "password123"
       role: "PROVIDER",
       status: "ACTIVE",
       phone: "+8801712345678",
@@ -80,7 +79,7 @@ async function main() {
     create: {
       name: "Test Customer",
       email: "customer@gearup.com",
-      password: "$2a$10$XxqjQvZ1h6E0hNxSfKpP2.YGH5PJ9OKQvK5W8F5X3JVQX5X5X5X5X", // bcrypt hash of "password123"
+      password: "$2b$10$aZKe2H3YS3R9EDa7Gd40TuwxxcZy/MOnWBP0okYr.1VoguD.V/1aW", // bcrypt hash of "password123"
       role: "CUSTOMER",
       status: "ACTIVE",
       phone: "+8801787654321",

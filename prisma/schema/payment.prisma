@@ -6,9 +6,8 @@ model Payment {
   status        PaymentStatus @default(PENDING)
   paidAt        DateTime?
   createdAt     DateTime      @default(now())
-
-  rentalOrderId String      @unique
-  order         RentalOrder @relation(fields: [rentalOrderId], references: [id])
-  user          User?       @relation(fields: [userId], references: [id])
+  rentalOrderId String        @unique
   userId        String?
+  order         RentalOrder   @relation(fields: [rentalOrderId], references: [id])
+  user          User?         @relation(fields: [userId], references: [id])
 }
