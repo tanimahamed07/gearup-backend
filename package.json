@@ -11,6 +11,10 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "seed": "tsx prisma/seed.ts",
+    "test:webhook": "tsx test-webhook.ts",
+    "test:provider-orders": "tsx test-provider-orders.ts",
+    "test:reviews": "tsx test-reviews.ts",
+    "check:payments": "tsx check-webhook-logs.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "prisma": {

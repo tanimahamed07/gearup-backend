@@ -11,6 +11,8 @@ import { categoryRouts } from "./modules/category/category.route";
 import { orderRoutes } from "./modules/order/order.route";
 import { paymentRouts } from "./modules/payment/payment.route";
 import { paymentController } from "./modules/payment/payment.controller";
+import { reviewRoutes } from "./modules/Review/review.route";
+
 
 const app: Application = express();
 app.use(
@@ -39,6 +41,7 @@ app.use("/api/gear/", gearRoutes);
 app.use("/api/category/", categoryRouts);
 app.use("/api/rentals", orderRoutes);
 app.use("/api/payments", paymentRouts);
+app.use("/api/reviews", reviewRoutes);
 
 app.use(notFound);
 
