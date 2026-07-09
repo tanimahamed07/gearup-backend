@@ -40,6 +40,23 @@ async function main() {
 
   console.log("✅ Categories created");
 
+  // Create admin user
+  const admin = await prisma.user.upsert({
+    where: { email: "admin@gearup.com" },
+    update: {},
+    create: {
+      name: "Admin User",
+      email: "admin@gearup.com",
+      password:
+        "$2a$10$8Zr0L7kH9FvZ1h6E0hNxSfKpP2.YGH5PJ9OKQvK5W8F5X3JVQX5X5X5X", // bcrypt hash of "admin123"
+      role: "ADMIN",
+      status: "ACTIVE",
+      phone: "+8801700000000",
+    },
+  });
+
+  console.log("✅ Admin user created");
+
   // Create provider user
   const provider = await prisma.user.upsert({
     where: { email: "provider@gearup.com" },
@@ -55,6 +72,22 @@ async function main() {
   });
 
   console.log("✅ Provider user created");
+
+  // Create customer user
+  const customer = await prisma.user.upsert({
+    where: { email: "customer@gearup.com" },
+    update: {},
+    create: {
+      name: "Test Customer",
+      email: "customer@gearup.com",
+      password: "$2a$10$XxqjQvZ1h6E0hNxSfKpP2.YGH5PJ9OKQvK5W8F5X3JVQX5X5X5X5X", // bcrypt hash of "password123"
+      role: "CUSTOMER",
+      status: "ACTIVE",
+      phone: "+8801787654321",
+    },
+  });
+
+  console.log("✅ Customer user created");
 
   // Create 10 dummy gear items
   const gearItems = [

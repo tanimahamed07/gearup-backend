@@ -51,7 +51,9 @@ const getProviderIncomingOrders = catchAsync(
   async (req: Request, res: Response) => {
     const providerId = req.user?.id;
 
-    const result = await orderService.getProviderIncomingOrders(providerId as string);
+    const result = await orderService.getProviderIncomingOrders(
+      providerId as string,
+    );
 
     sendResponse(res, {
       success: true,
@@ -67,7 +69,11 @@ const updateOrderStatus = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;
 
-  const result = await orderService.updateOrderStatus(id as string, providerId, status);
+  const result = await orderService.updateOrderStatus(
+    id as string,
+    providerId,
+    status,
+  );
 
   sendResponse(res, {
     success: true,
@@ -77,10 +83,24 @@ const updateOrderStatus = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllRentalsForAdmin = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await orderService.getAllRentalsForAdmin();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "All rental orders retrieved successfully (Admin)",
+      data: result,
+    });
+  },
+);
+
 export const orderController = {
   postOrder,
   getMyRentals,
   getRentalDetails,
   getProviderIncomingOrders,
   updateOrderStatus,
+  getAllRentalsForAdmin,
 };

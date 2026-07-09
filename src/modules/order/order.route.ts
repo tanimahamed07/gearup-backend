@@ -22,4 +22,11 @@ router.patch(
   orderController.updateOrderStatus,
 );
 
+// Admin routes
+router.get(
+  "/admin/all",
+  auth(Role.ADMIN),
+  orderController.getAllRentalsForAdmin,
+);
+
 export const orderRoutes = router;
